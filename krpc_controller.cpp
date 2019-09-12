@@ -57,7 +57,12 @@ class Controller
 
 	bool brakes_state;
 	bool game_brakes_state;
-	
+
+	bool stage_trigger;
+	bool previous_stage_trigger = false;
+
+	bool momentary_switch_reset = false;
+	uint16 m_s_r_int = 0;
 
 	Controller()
 	{
@@ -124,36 +129,51 @@ class Controller
 		//std::cout << fuel_fraction << "\n";				
 		output= output | (fuel_int << 0); //bitshift shown for consistency
 
+		momentary_switch_reset = false;
 
 		
 		//Inputs
 
 		//SAS switch
-		SAS_state = (input & 0b00000001);
+		SAS_state = (input & 0b0000000000000001);
 		if (game_SAS_state != SAS_state){
 		control.set_sas(SAS_state);
 		}
 
 		//RCS switch
-		RCS_state = (input & 0b00000010);
+		RCS_state = (input & 0b000000000000010);
 		if (game_RCS_state != RCS_state){
 		control.set_rcs(RCS_state);
 		}
 
 		//gear switch
-		gear_state = (input & 0b00000100);
+		gear_state = (input & 0b0000000000000100);
 		if (game_gear_state != gear_state){
 		control.set_gear(gear_state);
 		}
 		
 		//brakes switch
-		brakes_state = (input & 0b00001000);
+		brakes_state = (input & 0b0000000000001000);
 		if (game_brakes_state != brakes_state){
 		control.set_brakes(brakes_state);
 		}
 
+		//Staging button
+		//std::cout << previous_stage_trigger << stage_trigger << "\n";
+		previous_stage_trigger = stage_trigger;
+		stage_trigger = (input & 0b0000000000010000);
+		if (stage_trigger & (not previous_stage_trigger)){
+		control.activate_next_stage();
+		momentary_switch_reset = true;
+		}
 
 
+
+
+
+		//Momentary switch resets
+		m_s_r_int = static_cast<uint16>(momentary_switch_reset);
+		output= output | (fuel_int << 13);
 
 	}
 
