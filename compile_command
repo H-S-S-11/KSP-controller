@@ -1,0 +1,18 @@
+For krpc script:
+
+g++ main.cpp -pthread -std=c++11 -lkrpc -lprotobuf -o test
+
+to run in terminal: (sudo) ./test
+
+For spi script:
+
+gcc get-version.c -lft4222 -Wl,-rpath,/usr/local/lib -o krpc_controller
+
+sudo ./spi_interface
+
+
+Combined program:
+
+g++ krpc_controller.cpp -pthread -std=c++11 -lkrpc -lprotobuf -lft4222 -Wl,-rpath,/usr/local/lib -o krpc_controller.out
+
+to run: sudo ./krpc_controller.out

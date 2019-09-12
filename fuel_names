@@ -1,0 +1,7 @@
+Names given to fuel types by the KSP API
+
+Liquid Fuel: LiquidFuel
+Solid Fuel: SolidFuel
+Oxidiser: Oxidizer (note z!)
+Monopropellant: MonoPropellant (capitalisation)
+Electric Charge: ElectricCharge

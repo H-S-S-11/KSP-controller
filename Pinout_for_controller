@@ -1,0 +1,8 @@
+Outputs:
+0-2: 3 bit code for fuel display 1
+
+Inputs:
+0: Toggle switch for SAS
+1: Toggle switch for RCS
+2: Toggle switch for gear
+3: Toggle switch for brakes
