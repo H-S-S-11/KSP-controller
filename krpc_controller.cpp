@@ -168,13 +168,15 @@ class Controller
 			}
 		}
 
-
+		
 
 
 
 		//Momentary switch resets
 		s_m_s_r_int = static_cast<uint16>(stage_momentary_switch_reset);
-		output= output | (s_m_s_r_int << 13);
+		output= output | (s_m_s_r_int << 11);
+		
+		
 
 	}
 
@@ -197,8 +199,6 @@ int main() {
     	    (int)ft_status);
     	    return 0;
     	}
-
-
 
 	
 	//Set default Read and Write timeout 1 sec
