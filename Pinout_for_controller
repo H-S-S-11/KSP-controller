@@ -1,7 +1,7 @@
 Outputs:
 0-2: 3 bit code for fuel display 1
 
-13: Reset for momentary switch latches
+13: Reset for stage momentary switch latch
 
 Inputs:
 0: Toggle switch for SAS

@@ -60,9 +60,8 @@ class Controller
 
 	bool stage_trigger;
 	bool previous_stage_trigger = false;
-
-	bool momentary_switch_reset = false;
-	uint16 m_s_r_int = 0;
+	bool stage_momentary_switch_reset = false;
+	uint16 s_m_s_r_int = 0;
 
 	Controller()
 	{
@@ -129,7 +128,7 @@ class Controller
 		//std::cout << fuel_fraction << "\n";				
 		output= output | (fuel_int << 0); //bitshift shown for consistency
 
-		momentary_switch_reset = false;
+		stage_momentary_switch_reset = false;
 
 		
 		//Inputs
@@ -162,9 +161,11 @@ class Controller
 		//std::cout << previous_stage_trigger << stage_trigger << "\n";
 		previous_stage_trigger = stage_trigger;
 		stage_trigger = (input & 0b0000000000010000);
-		if (stage_trigger & (not previous_stage_trigger)){
-		control.activate_next_stage();
-		momentary_switch_reset = true;
+		if (stage_trigger){
+			stage_momentary_switch_reset = true;
+			if (not previous_stage_trigger){
+				control.activate_next_stage();
+			}
 		}
 
 
@@ -172,8 +173,8 @@ class Controller
 
 
 		//Momentary switch resets
-		m_s_r_int = static_cast<uint16>(momentary_switch_reset);
-		output= output | (fuel_int << 13);
+		s_m_s_r_int = static_cast<uint16>(stage_momentary_switch_reset);
+		output= output | (s_m_s_r_int << 13);
 
 	}
 
