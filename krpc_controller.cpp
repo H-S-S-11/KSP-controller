@@ -58,14 +58,8 @@ class Controller
 	bool brakes_state;
 	bool game_brakes_state;
 
-	bool stage_trigger = false;
+	bool stage_trigger;
 	bool previous_stage_trigger = false;
-
-	bool abort_trigger = false;
-	bool previous_abort_trigger = false;
-
-	bool chute_trigger = false;
-	bool previous_chute_trigger = false;
 
 	bool momentary_switch_reset = false;
 	uint16 m_s_r_int = 0;
@@ -172,24 +166,6 @@ class Controller
 		control.activate_next_stage();
 		momentary_switch_reset = true;
 		}
-
-		//Abort button
-		previous_abort_trigger = abort_trigger;
-		abort_trigger = (input & 0b0000000000100000);
-		if (abort_trigger & (not previous_abort_trigger)){
-		control.set_abort(true);
-		momentary_switch_reset = true;
-		}
-
-		//Staging button
-		//std::cout << previous_stage_trigger << stage_trigger << "\n";
-		previous_chute_trigger = chute_trigger;
-		chute_trigger = (input & 0b0000000001000000);
-		if (chute_trigger & (not previous_chute_trigger)){
-		control.set_parachutes(true);
-		momentary_switch_reset = true;
-		}
-
 
 
 
