@@ -270,8 +270,20 @@ int main() {
 	auto RCS_state_stream = vessel.control().rcs_stream();
 	auto gear_state_stream = vessel.control().gear_stream();
 	auto brakes_state_stream = vessel.control().brakes_stream();
-	
 
+
+	//Flush latches and any inputs
+
+	ksp_control.output = 0x3800;
+
+	for (int flushes = 0; flushes<2; flushes++){
+	
+	ksp_control.output_buffer_builder();
+	send_buffer = ksp_control.send_buffer;
+
+	
+	ft4222_status = FT4222_SPIMaster_SingleReadWrite(ft_handle, &recieve_buffer[0], &send_buffer[0], send_buffer.size(), 				&sizeTransferred, true);
+	}
 
 
 	//Main loop
