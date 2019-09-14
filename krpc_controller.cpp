@@ -44,7 +44,6 @@ class Controller
 	float total_liquid_fuel;
 
 
-
 	//input related variables
 	bool SAS_state;
 	bool game_SAS_state;
@@ -58,10 +57,15 @@ class Controller
 	bool brakes_state;
 	bool game_brakes_state;
 
-	bool stage_trigger;
-	bool previous_stage_trigger = false;
+	bool stage_trigger = true;
+	bool previous_stage_trigger = true;
 	bool stage_momentary_switch_reset = false;
 	uint16 s_m_s_r_int = 0;
+
+	bool abort_trigger = true;
+	bool previous_abort_trigger = true;
+	bool abort_momentary_switch_reset = false;
+	uint16 a_m_s_r_int = 0;
 
 	Controller()
 	{
@@ -129,7 +133,7 @@ class Controller
 		output= output | (fuel_int << 0); //bitshift shown for consistency
 
 		stage_momentary_switch_reset = false;
-
+		abort_momentary_switch_reset = false;
 		
 		//Inputs
 
@@ -158,23 +162,38 @@ class Controller
 		}
 
 		//Staging button
-		//std::cout << previous_stage_trigger << stage_trigger << "\n";
-		previous_stage_trigger = stage_trigger;
+		previous_stage_trigger = stage_trigger;		
 		stage_trigger = (input & 0b0000000000010000);
+		//std::cout << previous_stage_trigger << " " << stage_trigger << "\n";
 		if (stage_trigger){
 			stage_momentary_switch_reset = true;
 			if (not previous_stage_trigger){
+				//std::cout << "staging\n";
 				control.activate_next_stage();
 			}
 		}
 
-		
+		//Abort button
+		previous_abort_trigger = abort_trigger;		
+		abort_trigger = (input & 0b0000000000100000);
+		if (abort_trigger){
+			abort_momentary_switch_reset = true;
+			if (not previous_abort_trigger){
+				//std::cout << "abort\n";
+				control.set_abort(true);
+			}
+		}
+
 
 
 
 		//Momentary switch resets
 		s_m_s_r_int = static_cast<uint16>(stage_momentary_switch_reset);
 		output= output | (s_m_s_r_int << 11);
+
+		//Momentary switch resets
+		a_m_s_r_int = static_cast<uint16>(abort_momentary_switch_reset);
+		output= output | (a_m_s_r_int << 12);
 		
 		
 

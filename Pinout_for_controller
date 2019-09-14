@@ -2,6 +2,7 @@ Outputs:
 0-2: 3 bit code for fuel display 1
 
 11: Reset for stage momentary switch latch
+12: Reset for abort momentary switch latch
 
 Inputs:
 0: Toggle switch for SAS
@@ -9,3 +10,4 @@ Inputs:
 2: Toggle switch for gear
 3: Toggle switch for brakes
 4: Momentary switch for staging
+5: Momentary switch for abort
