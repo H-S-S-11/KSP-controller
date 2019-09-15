@@ -3,6 +3,7 @@ Outputs:
 
 10: Reset for stage momentary switch latch
 11: Reset for abort momentary switch latch
+12: Reset for parachute momentary switch latch
 
 Inputs:
 0: Toggle switch for SAS
@@ -11,3 +12,4 @@ Inputs:
 3: Toggle switch for brakes
 4: Momentary switch for staging
 5: Momentary switch for abort
+6: Momentary switch for parachutes

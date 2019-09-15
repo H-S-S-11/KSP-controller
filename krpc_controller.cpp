@@ -67,6 +67,11 @@ class Controller
 	bool abort_momentary_switch_reset = false;
 	uint16 a_m_s_r_int = 0;
 
+	bool chute_trigger = true;
+	bool previous_chute_trigger = true;
+	bool chute_momentary_switch_reset = false;
+	uint16 c_m_s_r_int = 0;
+
 	Controller()
 	{
 	
@@ -183,17 +188,31 @@ class Controller
 				control.set_abort(true);
 			}
 		}
+		
+		//Parachute button
+		previous_chute_trigger = chute_trigger;		
+		chute_trigger = (input & 0b0000000001000000);
+		if (chute_trigger){
+			chute_momentary_switch_reset = true;
+			if (not previous_chute_trigger){
+				//std::cout << "abort\n";
+				control.set_parachutes(true);
+			}
+		}
 
 
 
-
-		//Momentary switch resets
+		//Momentary switch reset for staging
 		s_m_s_r_int = static_cast<uint16>(stage_momentary_switch_reset);
 		output= output | (s_m_s_r_int << 10);
 
-		//Momentary switch resets
+		//Momentary switch reset for abort
 		a_m_s_r_int = static_cast<uint16>(abort_momentary_switch_reset);
 		output= output | (a_m_s_r_int << 11);
+
+		//Momentary switch reset for parachutes
+		c_m_s_r_int = static_cast<uint16>(chute_momentary_switch_reset);
+		output= output | (c_m_s_r_int << 12);
 		
 		
 
