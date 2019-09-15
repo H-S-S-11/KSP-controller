@@ -189,11 +189,11 @@ class Controller
 
 		//Momentary switch resets
 		s_m_s_r_int = static_cast<uint16>(stage_momentary_switch_reset);
-		output= output | (s_m_s_r_int << 11);
+		output= output | (s_m_s_r_int << 10);
 
 		//Momentary switch resets
 		a_m_s_r_int = static_cast<uint16>(abort_momentary_switch_reset);
-		output= output | (a_m_s_r_int << 12);
+		output= output | (a_m_s_r_int << 11);
 		
 		
 
